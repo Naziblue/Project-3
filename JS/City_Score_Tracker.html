@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>City Score Tracker</title>
+
+
+  
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+
+  <!-- Leaflet JavaScript code -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+
+  <!-- Leaflet Geocoder CSS and JavaScript -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+  <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+  <!-- Needed Libraries -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  
+
+  <!-- D3 Library -->
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+
+  <!-- Our CSS -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+
+  
+
+</head>
+
+<body>
+  <h1 id = "title"> City Score Tracker </h1>
+  
+  <div id="slider">
+    
+    <input type="range" min="0" max="100" value="0" id="minScoreSlider" oninput="updateMinSliderValue(this.value)">
+    <p>Minimum score: <span id="minSliderValue">0</span></p>
+    
+    <input type="range" min="0" max="100" value="100" id="maxScoreSlider" oninput="updateMaxSliderValue(this.value)">
+    <p>Maximum score: <span id="maxSliderValue">100</span></p>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="text"> Average Cost Score </div>
+
+  
+  <canvas id="barChart" class="chart"></canvas>
+
+  <div id="text"> Average Safty Score </div>
+
+  <canvas id="barChart2" class="chart"></canvas>
+
+  
+
+
+  
+  <!-- JavaScript file -->
+  <script type="text/javascript" src="main.js"></script>
+</body>
+
+</html>

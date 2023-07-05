@@ -2,12 +2,12 @@
 var map = L.map('map').setView([0, 0], 2);
 var markers = L.layerGroup().addTo(map);
 var colorDescriptions = {
-  gray: 'Score 0-20',
-  red: 'Score 21-30',
-  orange: 'Score 31-40',
-  yellow: 'Score 41-50',
-  green: 'Score 51-60',
-  blue: 'Score 61-100',
+  gray: 'Total Score 0-20',
+  red: 'Total Score 21-30',
+  orange: 'Total Score 31-40',
+  yellow: 'Total Score 41-50',
+  green: 'Total Score 51-60',
+  blue: 'Total Score 61-100',
 };
 
 
@@ -32,7 +32,7 @@ legendControl.onAdd = function(map) {
 };
 // Function to create the legend content
 function createLegend(container) {
-  var legendContent = '<h4>Legend</h4>';
+  var legendContent = '<h4>Total Score: </h4>';
 
   for (var color in colorDescriptions) {
     var description = colorDescriptions[color];
@@ -56,10 +56,17 @@ var colorCategories = {
 fetch('http://127.0.0.1:5000')
   .then(response => response.json())
   .then(data => {
+    var cityNames = [];
+    var safetyScores = [];
+    var costScores = [];
     markers.clearLayers();
     // Loop through the city data and add CircleMarkers to the map
     data.forEach(city => {
+      cityNames.push(city.city);
+      safetyScores.push(city.safety_score);
+      costScores.push(city.cost_of_living_score);
       var score = city.teleport_city_score;
+
       var cost_score = city.cost_of_living_score;
       var safety_score = city.safety_score;
       var color;
@@ -93,7 +100,7 @@ fetch('http://127.0.0.1:5000')
         score: score, // Pass the score here
       }).addTo(map);
 
-      marker.bindPopup('<b>' + city.city + '</b><br>Total Score: ' + city.teleport_city_score.toFixed(3) );
+      marker.bindPopup('<b>' + city.city + '</b><br>Total Score: ' + city.teleport_city_score.toFixed(3) + '</b><br>Cost of Living Score: '+ cost_score.toFixed(3) + '</b><br>Safety Score: ' + safety_score.toFixed(3))
       markers.addLayer(marker);
     });
 
@@ -112,7 +119,7 @@ var ctx = document.getElementById('barChart2').getContext('2d');
 new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: Object.keys(safetyAverages),
+    labels: ["Total Score 61-100", "Total Score 51-60", "Total Score 41-50", "Total Score 31-40"],
     datasets: [{
       label: 'Average Safety Score',
       data: Object.values(safetyAverages),
@@ -130,20 +137,14 @@ new Chart(ctx, {
 
 
 
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-  attribution: '©OpenStreetMap, ©CartoDB',
-  maxZoom: 18,
-}).addTo(map).on('add', function(){
-  var svgElement = this.getElement();
-  svgElement.classList.add('marker-glow');
-});
+
 
 var ctx = document.getElementById('barChart').getContext('2d');
 
 new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: Object.keys(costAverages),
+    labels: ["Total Score 61-100", "Total Score 51-60", "Total Score 41-50", "Total Score 31-40"],
     datasets: [{
       label: 'Average Cost Score',
       data: Object.values(costAverages),
@@ -159,6 +160,53 @@ new Chart(ctx, {
   }
 });
 
+var datasets = cityNames.map((city, index) => ({
+  label: city,
+  x: costScores[index],
+  y: safetyScores[index],
+}));
+
+
+var ctx = document.getElementById('scatterChart').getContext('2d');
+
+new Chart(ctx, {
+  type: 'scatter',
+  data: {
+    datasets: [{
+      label: 'Safety Score vs Cost of Living Score',
+      data: datasets,
+      backgroundColor: 'rgb(7, 255, 243)',
+
+    }]
+  },
+  options: {
+    responsive: true,
+    scales: {
+      x: {
+        display: true,
+        color: '#e7b591',
+        title: {
+          display: true,
+          text: 'Cost of Living Score',
+        },
+        grid:{
+          color: "#ebd4c46d"
+        },
+      },
+      y: {
+        display: true,
+        color: '#e7b591',
+        title: {
+          display: true,
+          text: 'Safety Score'
+        },
+        grid:{
+          color: "#ebd4c46d"
+        }
+      }
+    }
+  }
+});
   })
   .catch(error => {
     console.log('Error:', error);

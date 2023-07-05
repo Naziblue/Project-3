@@ -99,9 +99,32 @@ input[type=range]::-moz-range-thumb {
 #barChart{
 
   text-align: center;
+  background-color: rgba(115, 33, 1, 0.781) ;
   
   
-  margin-left: 20px;
+  margin-left: 100px;
   margin-right: 20px;
   
+}
+#barChart2{
+
+  text-align: center;
+  background-color: rgba(115, 33, 1, 0.781) ;
+  
+  
+  margin-left: 100px;
+  margin-right: 20px;
+  
+}
+
+#scatterChart {
+
+  text-align: center;
+  background-color: rgba(115, 33, 1, 0.781) ;
+  
+  
+  margin-left: 100px;
+  margin-right: 20px;
+  margin-top: 50px;
+
 }
